@@ -1,0 +1,69 @@
+server:
+  port: ${SERVER_PORT:9095}
+
+spring:
+  application:
+    name: ${APP_NAME:fuelMemo}
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/FuelMemo_DB}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:Admincp01}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: ${DDL_AUTO:update}
+    show-sql: ${SHOW_SQL:true}
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  logging:
+    file:
+      name: ${LOG_FILE:logs/app.log}
+    level:
+      org.springframework.web: ${LOG_WEB:DEBUG}
+      org.hibernate.SQL: ${LOG_SQL:DEBUG}
+      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+  security:
+    jwt:
+      secret: ${JWT_SECRET:CHANGE_ME}
+      access-expiration: ${JWT_ACCESS_EXPIRATION:9000000}
+      refresh-expiration: ${JWT_REFRESH_EXPIRATION:6048000000}
+
+  batch:
+    batch:
+      jdbc:
+        initialize-schema: ${BATCH_SCHEMA:always}
+      job:
+        enabled: ${BATCH_JOB:false}
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+      enabled: true
+
+app:
+  cors:
+    allowed-origins: "*"
+
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME:dxm8bszc0}
+  api-key: ${CLOUDINARY_API_KEY:CHANGE_ME}
+  api-secret: ${CLOUDINARY_API_SECRET:CHANGE_ME}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
