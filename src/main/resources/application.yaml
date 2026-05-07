@@ -6,7 +6,7 @@ spring:
     name: ${APP_NAME:fuelMemo}
 
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE:local}
+    active: ${SPRING_PROFILES_ACTIVE:prod}
 
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/FuelMemo_DB}
