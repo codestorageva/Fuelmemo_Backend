@@ -42,7 +42,8 @@ spring:
       jdbc:
         initialize-schema: ${BATCH_SCHEMA:always}
       job:
-        enabled: ${BATCH_JOB:false}
+         enabled: false
+         name: ${BATCH_JOB_NAME:none}
 
   servlet:
     multipart:
