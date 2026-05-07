@@ -1,0 +1,19 @@
+package com.example.FuelMemo.AuthModule.Controller;
+
+import com.example.FuelMemo.AuthModule.Dto.AuthenticationResponse;
+import com.example.FuelMemo.AuthModule.Dto.LoginRequest;
+import com.example.FuelMemo.AuthModule.Service.AuthService;
+import com.example.FuelMemo.Shared.Response.MessageResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+public class TestController {
+
+    @GetMapping("/")
+    public String test() {
+        return "Backend Running";
+    }
+}
+   
