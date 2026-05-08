@@ -31,15 +31,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtAccessDeniedHandler accessDeniedHandler;
     private final JwtService jwtService;
     private final UserRepository userRepository;
     @Value("${app.cors.allowed-origins:*}")
     private String allowedOrigins;
 
-    @Autowired
+     @Autowired
     public SecurityConfig(
-            JwtAuthenticationEntryPoint authenticationEntryPoint, JwtService jwtService, UserRepository userRepository) {
+            JwtAuthenticationEntryPoint authenticationEntryPoint,
+            JwtAccessDeniedHandler accessDeniedHandler, 
+            JwtService jwtService,
+            UserRepository userRepository) {
         this.authenticationEntryPoint = authenticationEntryPoint;
+        this.accessDeniedHandler = accessDeniedHandler; 
         this.jwtService = jwtService;
         this.userRepository = userRepository;
     }
@@ -60,7 +65,10 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
+                 .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(authenticationEntryPoint) // 401
+                        .accessDeniedHandler(accessDeniedHandler)           // ✅ 403 Add કરો
+                )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // અહીં હવે આપણે બનાવેલું Bean વાપરીએ છીએ
