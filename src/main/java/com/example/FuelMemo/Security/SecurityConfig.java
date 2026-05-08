@@ -3,6 +3,7 @@ package com.example.FuelMemo.Security;
 import com.example.FuelMemo.AuthModule.Repository.UserRepository;
 import com.example.FuelMemo.Security.jwt.JwtAuthenticationEntryPoint;
 import com.example.FuelMemo.Security.jwt.JwtAuthenticationFilter;
+import com.example.FuelMemo.Security.jwt.JwtAccessDeniedHandler;
 import com.example.FuelMemo.Security.jwt.JwtService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
