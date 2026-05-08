@@ -38,12 +38,11 @@ spring:
       refresh-expiration: ${JWT_REFRESH_EXPIRATION:6048000000}
 
   batch:
-    batch:
-      jdbc:
-        initialize-schema: ${BATCH_SCHEMA:always}
-      job:
-         enabled: false
-         name: ${BATCH_JOB_NAME:none}
+    jdbc:
+      initialize-schema: ${BATCH_SCHEMA:always}
+    job:
+      enabled: false
+      name: ${BATCH_JOB_NAME:none}
 
   servlet:
     multipart:
