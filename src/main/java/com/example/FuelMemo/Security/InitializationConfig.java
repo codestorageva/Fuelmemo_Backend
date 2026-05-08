@@ -199,8 +199,8 @@ public class InitializationConfig implements CommandLineRunner {
                 .orElseThrow(() -> new RuntimeException("SUPERADMIN role not found!"));
 
         User superAdminUser = User.builder()
-                .userName("superadmin")
-                .email("superadmin@gmail.com")
+                .userName("superadmin.vaistra")
+                .email("superadmin.vaistra@gmail.com")
                 .password(passwordEncoder.encode("SuperAdmin@123"))
                 .pwd("SuperAdmin@123")
                 .firstName("Super")
