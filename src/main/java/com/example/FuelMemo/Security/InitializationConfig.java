@@ -187,7 +187,7 @@ public class InitializationConfig implements CommandLineRunner {
     // ======================================================
     private void createSuperAdminUser(Company defaultCompany) {
 
-        User existingUser = userRepository.findByUserName("superadmin");
+        User existingUser = userRepository.findByUserName("superadmin.vaistra");
 
         if (existingUser != null) {
             System.out.println("SUPERADMIN already exists, skipping...");
