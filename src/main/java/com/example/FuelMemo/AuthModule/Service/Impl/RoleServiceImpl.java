@@ -228,7 +228,7 @@ private static final Set<String> PROTECTED_ROLES = Set.of(
                 "Role created successfully"
         );
     }
-    @Override
+       @Override
     @Transactional
     public MessageResponse updateRole(Integer roleId, UpdateRoleRequestDto dto, Authentication authentication) {
 
@@ -257,8 +257,56 @@ private static final Set<String> PROTECTED_ROLES = Set.of(
                         "ROLE_SUPERADMIN".equalsIgnoreCase(uc.getRole().getRoleName()));
 
         // Permission check: SUPERADMIN or user with UPDATE_ROLE permission
-        if (!isSuperAdmin && !user.hasPermission("UPDATE_ROLE", companyId)) {
-            throw new AccessDeniedException("You do not have permission to update roles.");
+        if (!isSuperAdmin) {
+
+            // Debug
+            System.out.println("Current user companies: " +
+                    user.getUserCompanies().stream()
+                            .map(uc -> "companyId=" + (uc.getCompany() != null ? uc.getCompany().getCompanyId() : "null") +
+                                    ", roleId=" + (uc.getRole() != null ? uc.getRole().getRoleId() : "null"))
+                            .collect(Collectors.joining(", ")));
+            System.out.println("Checking roleId: " + roleId + ", companyId: " + companyId);
+
+            // પોતાનો role update ન કરી શકે
+            boolean isOwnRole = user.getUserCompanies().stream()
+                    .anyMatch(uc -> uc.getCompany() != null &&
+                            uc.getCompany().getCompanyId().equals(companyId) &&
+                            uc.getRole() != null &&
+                            uc.getRole().getRoleId().equals(roleId));
+
+            System.out.println("isOwnRole: " + isOwnRole);
+
+            if (isOwnRole) {
+                throw new AccessDeniedException("You cannot update your own role.");
+            }
+
+            // User ની permissions count
+            // Current user permissions
+            Set<String> currentUserPermissions = user.getUserCompanies().stream()
+                    .filter(uc -> uc.getCompany() != null &&
+                            uc.getCompany().getCompanyId().equals(companyId))
+                    .map(UserCompany::getRole)
+                    .filter(Objects::nonNull)
+                    .flatMap(r -> r.getPermissions().stream())
+                    .map(Permission::getPermissionName)
+                    .collect(Collectors.toSet());
+
+            // Target role ની permissions count
+            Set<String> targetRolePermissions = role.getPermissions().stream()
+                    .map(Permission::getPermissionName)
+                    .collect(Collectors.toSet());
+
+            System.out.println("Current User Permissions: " + currentUserPermissions);
+            System.out.println("Target Role Permissions: " + targetRolePermissions);
+
+// User can only manage roles having permissions subset of their own
+            boolean canManageRole =
+                    currentUserPermissions.containsAll(targetRolePermissions);
+
+            if (!canManageRole) {
+                throw new AccessDeniedException(
+                        "You cannot update a role with permissions higher than yours.");
+            }
         }
 
         // ---------------- 🔒 PROTECTED ROLES ----------------
