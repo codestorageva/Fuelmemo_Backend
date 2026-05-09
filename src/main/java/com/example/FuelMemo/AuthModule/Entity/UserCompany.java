@@ -30,7 +30,7 @@ public class UserCompany {
     @JsonIgnore
     private Company company;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     @JsonIgnore
     private Role role;
