@@ -39,7 +39,7 @@
         @Column(name = "is_deleted")
         private Boolean isDeleted;
 
-        @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.DETACH})
+        @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.DETACH})
         @JoinTable(
                 name = "role_permissions",
                 joinColumns = @JoinColumn(name = "role_id"),
